@@ -47,14 +47,14 @@ defmodule ProteinTranslation do
   end
 
   @spec translate_codons(string_list, string_list) :: { atom, string_list }
-  def translate_codons([], proteins), do: { :ok, proteins }
+  def translate_codons([], proteins), do: { :ok, proteins |> Enum.reverse() }
 
   def translate_codons([codon | codons_tail], proteins) do
     case of_codon(codon) do
       { :ok, "STOP" } ->
         translate_codons([], proteins)
       { :ok, protein } ->
-        translate_codons(codons_tail, proteins ++ [protein])
+        translate_codons(codons_tail, [protein | proteins])
       _ ->
         { :error, "invalid RNA" }
     end
