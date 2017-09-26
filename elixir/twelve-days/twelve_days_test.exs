@@ -9,7 +9,7 @@ defmodule TwelveDaysTest do
   use ExUnit.Case
 
   describe "verse" do
-    #@tag :pending
+    # @tag :pending
     test "first verse" do
       assert TwelveDays.verse(1) == "On the first day of Christmas my true love gave to me, a Partridge in a Pear Tree."
     end

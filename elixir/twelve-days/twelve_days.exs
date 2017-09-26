@@ -1,25 +1,28 @@
 defmodule TwelveDays do
-  @verses_map %{
-    1 => "On the first day of Christmas my true love gave to me, a Partridge in a Pear Tree.",
-    2 => "On the second day of Christmas my true love gave to me, two Turtle Doves, and a Partridge in a Pear Tree.",
-    3 => "On the third day of Christmas my true love gave to me, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    4 => "On the fourth day of Christmas my true love gave to me, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    5 => "On the fifth day of Christmas my true love gave to me, five Gold Rings, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    6 => "On the sixth day of Christmas my true love gave to me, six Geese-a-Laying, five Gold Rings, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    7 => "On the seventh day of Christmas my true love gave to me, seven Swans-a-Swimming, six Geese-a-Laying, five Gold Rings, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    8 => "On the eighth day of Christmas my true love gave to me, eight Maids-a-Milking, seven Swans-a-Swimming, six Geese-a-Laying, five Gold Rings, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    9 => "On the ninth day of Christmas my true love gave to me, nine Ladies Dancing, eight Maids-a-Milking, seven Swans-a-Swimming, six Geese-a-Laying, five Gold Rings, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    10 => "On the tenth day of Christmas my true love gave to me, ten Lords-a-Leaping, nine Ladies Dancing, eight Maids-a-Milking, seven Swans-a-Swimming, six Geese-a-Laying, five Gold Rings, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    11 => "On the eleventh day of Christmas my true love gave to me, eleven Pipers Piping, ten Lords-a-Leaping, nine Ladies Dancing, eight Maids-a-Milking, seven Swans-a-Swimming, six Geese-a-Laying, five Gold Rings, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-    12 => "On the twelfth day of Christmas my true love gave to me, twelve Drummers Drumming, eleven Pipers Piping, ten Lords-a-Leaping, nine Ladies Dancing, eight Maids-a-Milking, seven Swans-a-Swimming, six Geese-a-Laying, five Gold Rings, four Calling Birds, three French Hens, two Turtle Doves, and a Partridge in a Pear Tree.",
-  }
+  @gifts [
+    "a Partridge in a Pear Tree",
+    "two Turtle Doves",
+    "three French Hens",
+    "four Calling Birds",
+    "five Gold Rings",
+    "six Geese-a-Laying",
+    "seven Swans-a-Swimming",
+    "eight Maids-a-Milking",
+    "nine Ladies Dancing",
+    "ten Lords-a-Leaping",
+    "eleven Pipers Piping",
+    "twelve Drummers Drumming",
+  ]
+
+  @days ~w[first second third fourth fifth sixth seventh eighth ninth tenth eleventh twelfth]
+
   @doc """
   Given a `number`, return the song's verse for that specific day, including
   all gifts for previous days in the same line.
   """
   @spec verse(number :: integer) :: String.t()
   def verse(number) do
-    @verses_map[number]
+    begining(number) <> gifts(number) <> "."
   end
 
   @doc """
@@ -39,5 +42,19 @@ defmodule TwelveDays do
   def sing do
     verses(1, 12)
   end
+
+  @spec begining(number :: integer) :: String.t()
+  defp begining(number) do
+    day = Enum.at(@days, number - 1)
+    "On the #{day} day of Christmas my true love gave to me, "
+  end
+
+  @spec gifts(number :: integer) :: String.t()
+  defp gifts(1), do: gifts_from_day(1)
+  defp gifts(2), do: gifts_from_day(2) <> ", and #{gifts(1)}"
+  defp gifts(n), do: gifts_from_day(n) <> ", #{gifts(n - 1)}"
+
+  @spec gifts_from_day(number :: integer) :: String.t()
+  defp gifts_from_day(number), do: Enum.at(@gifts, number - 1)
 end
 
